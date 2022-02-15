@@ -15,3 +15,5 @@ COPY *.go /go/src/benchmarks/
 RUN go build -o benchmarks
 
 CMD ./benchmarks
+
+EXPOSE 8080

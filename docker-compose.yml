@@ -12,6 +12,8 @@ services:
       - "8080:80"
     networks:
       - "benchmarks"
+    # deploy:
+    #   replicas: 3
   go:
     links:
       - db
@@ -40,6 +42,14 @@ services:
       - "benchmarks"
     # deploy:
     #   replicas: 3
+  nginx:
+    build: ./nginx
+    ports:
+    - "9000:80"
+    depends_on:
+    - python
+    - go
+    - php
   db:
     image: mariadb:10.2
     command: --default-authentication-plugin=mysql_native_password

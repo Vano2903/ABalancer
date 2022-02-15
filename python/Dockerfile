@@ -5,3 +5,5 @@ RUN pip install -r requirements.txt
 COPY . /
 ENTRYPOINT [ "python3" ]
 CMD [ "main.py" ]
+
+EXPOSE 8080
