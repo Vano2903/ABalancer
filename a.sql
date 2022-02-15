@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS benchmarks (
+    ID INT auto_increment NOT NULL,
+    backType INT NOT NULL,
+    execTime BIGINT  NOT NULL,
+    callDate DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    PRIMARY KEY(ID)
+);

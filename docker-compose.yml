@@ -1,0 +1,63 @@
+version: "3.9"
+services:
+  php:
+    links:
+      - db
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    # environment:
+    #   SECRET: ciao
+    ports:
+      - "8080:80"
+    networks:
+      - "benchmarks"
+  go:
+    links:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # environment:
+    #   SECRET: ciao
+    ports:
+      - "8081:8080"
+    networks:
+      - "benchmarks"
+    # deploy:
+    #   replicas: 3
+  python:
+    links:
+      - db
+    build:
+      context: ./python
+      dockerfile: Dockerfile
+    # environment:
+    #   SECRET: ciao
+    ports:
+      - "8082:8080"
+    networks:
+      - "benchmarks"
+    # deploy:
+    #   replicas: 3
+  db:
+    image: mariadb:10.2
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: benchmarks
+      MYSQL_USER: vano
+      MYSQL_PASSWORD: vano
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306"
+    volumes:
+      - ./db-dump:/var/lib/mysql
+    networks:
+      - "benchmarks"
+
+volumes:
+  mariadb:
+
+networks:
+  benchmarks:
