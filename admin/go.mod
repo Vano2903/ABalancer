@@ -1,4 +1,4 @@
-module github.com/vano2903/ABalancer
+module admin
 
 go 1.17
 

@@ -11,13 +11,13 @@ try {
 }
 
 //generate a random number between 1 and 10
-$rand = rand(1, 10);
-if ($rand == 1){
-    $useless = 0;
-    for ($i = 0; $i < 100000000; $i++) {
-        $useless += $i;
-    }
-}
+// $rand = rand(1, 10);
+// if ($rand == 1){
+//     $useless = 0;
+//     for ($i = 0; $i < 100000000; $i++) {
+//         $useless += $i;
+//     }
+// }
 
 //ending the timer and save on db
 $time_end = hrtime(true);
@@ -27,6 +27,6 @@ $time = $time_end - $time_start;
 $stmt = $db->prepare("INSERT INTO `benchmarks` (`id`, `backType`, `execTime`) VALUES (NULL, 'php', $time)");
 $stmt->execute();
 
-echo ("php ".$time." ns");
+echo ("php ".$time." ns\n");
 
 ?>

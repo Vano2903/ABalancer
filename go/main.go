@@ -23,13 +23,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 	//generate a random number between 1 and 10
-	rand := int(t) % 10
-	if rand == 0 {
-		useless := 0
-		for i := 0; i < 100000000; i++ {
-			useless += i
-		}
-	}
+	// rand := int(t) % 10
+	// if rand == 0 {
+	// 	useless := 0
+	// 	for i := 0; i < 100000000; i++ {
+	// 		useless += i
+	// 	}
+	// }
 
 	//calcolate the time passed
 	t = time.Now().UnixNano() - t
@@ -42,7 +42,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte(fmt.Sprintf("go %d ns", t)))
+	w.Write([]byte(fmt.Sprintf("go %d ns\n", t)))
 }
 
 func main() {

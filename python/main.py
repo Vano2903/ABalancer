@@ -33,11 +33,11 @@ def index():
     
 
     #generate a random number between 1 and 10
-    random_number = random.randint(1, 10)
-    if random_number == 1:
-        useless = 0
-        for i in range(1, 100000000):
-            useless += i
+    # random_number = random.randint(1, 10)
+    # if random_number == 1:
+    #     useless = 0
+    #     for i in range(1, 100000000):
+    #         useless += i
 
     end = time.time_ns() - before
 
@@ -47,7 +47,7 @@ def index():
     except database.Error as e:
         return "Error : " + str(e)
 
-    return "python " + str(end) + " ns"
+    return "python " + str(end) + " ns\n"
 
 
 if __name__ == '__main__':
