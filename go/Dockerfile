@@ -12,8 +12,8 @@ COPY go.mod go.sum /go/src/benchmarks/
 RUN go mod download
 
 COPY *.go /go/src/benchmarks/
-RUN go build -o benchmarks
+RUN go build main.go
 
-CMD ./benchmarks
+CMD ./main
 
 EXPOSE 8080

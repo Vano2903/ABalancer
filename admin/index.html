@@ -4,9 +4,132 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+    <title>admin section</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     
-</body>
+    <style>
+      .chart {
+        width: 100%;
+        min-height: 450px;
+      }
+
+      .row {
+        margin: 0 !important;
+      }
+
+      @media screen and (max-width: 800px) {
+        .annChart {
+          height: 250px;
+        }
+      }
+
+      @media screen and (max-width: 500px) {
+        .avatar {
+          width: 60px;
+        }
+      }
+    </style>
+
+  </head>
+
+  <body onload="init()">
+    <h1>Tabella</h1>
+    <center>
+      <div id='table_div' style="width: 400px; font-size: 20px;"></div>
+
+    </center>
+    <hr>
+    <h1>Grafici</h1>
+    <div id="sepCharCharts" class="row">
+      <div class="col-md-4 col-md-offset-4">
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-md-6">
+          <div id="piechart" class="chart"></div>
+      </div>
+      <div class="col-md-6">
+          <div id="barchart" class="chart"></div>
+      </div>
+  </div>
+
+    <!-- <div id='piechart' style='width: 900px; height: 600px;'></div>
+    <div id='barchart' style='width: 900px; height: 600px;'></div> -->
+
+    <script type='text/javascript'>
+      "use strict"
+      google.charts.load('current', { 'packages': ['table','corechart', 'bar'] });
+
+      async function init(){
+        let res = await fetch("./getAll")
+        let resp = await res.json()
+        console.log(resp)
+        if(resp.error){
+          alert(resp.msg)
+          return
+        }
+        console.log(resp.stats.meanTimes.go)
+        statsChart(resp.stats);
+
+        let calls = []
+        let totTime = []
+        for(let i = 0;i<resp.responses.length; i++){
+          if (calls[resp.responses[i].backType] === undefined){
+            calls[resp.responses[i].backType]=0
+            totTime[resp.responses[i].backType]=0
+          }
+          calls[resp.responses[i].backType]++
+          totTime[resp.responses[i].backType] += resp.responses[i].execTime 
+        }
+        console.log(calls)
+        console.log(totTime)
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'lang');
+        data.addColumn('number', 'calls');
+        data.addColumn('number', 'total time (s)');
+        data.addRows([
+          ['go',  calls["go"], totTime["go"]/1000000000],
+          ['php',   calls["php"],  totTime["php"]/1000000000],
+          ['python', calls["python"], totTime["python"]/1000000000],
+        ]);
+
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+
+        table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+      }
+ 
+      function statsChart(stats){
+        // let total = stats.mean-time.go + stats.mean-time.php + stats.mean-time.python
+
+        var data = google.visualization.arrayToDataTable([
+          ['lang'  , 'mean time (ns)'       ],
+          ['go'    , stats.meanTimes.go     ],
+          ['python', stats.meanTimes.python ],
+          ['php'   , stats.meanTimes.php    ]
+        ]);
+        
+        var databar = google.visualization.arrayToDataTable([
+          ['lang'  , 'mean time (ns)'       ],
+          ['go'    , stats.meanTimes.go     ],
+          ['python', stats.meanTimes.python ],
+          ['php'   , stats.meanTimes.php    ]
+      ]);
+
+        var options = {
+          title: 'mean time (less is better)'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        var chartbar = new google.visualization.BarChart(document.getElementById('barchart'));
+
+        chart.draw(data, options);
+        chartbar.draw(databar, options);
+      }
+
+    </script>
+  </body>
 </html>

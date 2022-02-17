@@ -13,14 +13,14 @@ import (
 )
 
 type Stats struct {
-	MeanTimes map[string]int `json:"mean-times"`
+	MeanTimes map[string]int `json:"meanTimes"`
 }
 
 type dbResponse struct {
 	ID       int       `json:"-"`
-	BackType string    `json:"back-type"`
-	ExecTime int       `json:"exec-time"`
-	CallDate time.Time `json:"call-date"`
+	BackType string    `json:"backType"`
+	ExecTime int       `json:"execTime"`
+	CallDate time.Time `json:"callDate"`
 }
 
 type resp struct {
@@ -72,7 +72,7 @@ func main() {
 	r.HandleFunc("/", homePage)
 	r.HandleFunc("/getAll", GetAllResponsesHandler)
 
-	log.Println("Listening on port 9090")
-	http.ListenAndServe(":9090", r)
+	log.Println("Listening on port 8080")
+	http.ListenAndServe(":8080", r)
 
 }
